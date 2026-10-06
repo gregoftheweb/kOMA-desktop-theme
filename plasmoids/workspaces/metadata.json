@@ -1,0 +1,25 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "",
+                "Name": "Sm1Tee"
+            },
+            {
+                "Name": "greg",
+                "Email": ""
+            }
+        ],
+        "Category": "Windows and Tasks",
+        "Description": "Per-screen workspace indicator (fork of Desktop Switcher by Sm1Tee, GPL-2.0-or-later)",
+        "EnabledByDefault": false,
+        "Icon": "virtual-desktops",
+        "Id": "kde-desktop.workspaces",
+        "License": "GPL-2.0-or-later",
+        "Name": "kOMA Workspaces",
+        "Version": "0.2",
+        "Website": ""
+    },
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

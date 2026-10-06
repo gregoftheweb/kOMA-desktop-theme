@@ -1,0 +1,26 @@
+[
+  {
+    "id": "tron",
+    "name": "Tron Aqua",
+    "scheme": "kOMATronAqua",
+    "color": "#23C8FF"
+  },
+  {
+    "id": "mclaren",
+    "name": "McLaren",
+    "scheme": "kOMAMcLaren",
+    "color": "#FF8700"
+  },
+  {
+    "id": "ferrari",
+    "name": "Ferrari",
+    "scheme": "kOMAFerrari",
+    "color": "#FF3245"
+  },
+  {
+    "id": "lambo",
+    "name": "Lambo",
+    "scheme": "kOMALambo",
+    "color": "#68DC45"
+  }
+]

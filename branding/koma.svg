@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+<title>kOMA</title><desc>Interconnected Tron Aqua circular lines with a McLaren orange K</desc>
+<g fill="none" stroke="#23C8FF" stroke-width="4" stroke-linecap="square" stroke-linejoin="round">
+<path d="M 118.465,71.655 A 55,55 0 0 1 45.189,115.683 L 47.925,108.166 A 47,47 0 0 0 105.499,86.065"/>
+<path d="M 30.139,107.341 A 55,55 0 0 1 28.647,21.868 L 33.789,27.996 A 47,47 0 0 0 24.142,88.906"/>
+<path d="M 43.397,13.005 A 55,55 0 0 1 118.164,54.449 L 110.286,55.839 A 47,47 0 0 0 62.360,17.029"/>
+</g>
+<path d="M 47,39 V 89 M 80,39 L 47,67 M 59,57 L 82,89" fill="none" stroke="#FF8700" stroke-width="9" stroke-linejoin="miter"/>
+</svg>

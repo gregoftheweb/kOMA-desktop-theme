@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+"""Switch only the KDE color scheme; do not apply a Global Theme or layout."""
+import argparse
+import configparser
+import fcntl
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+PALETTES = json.loads(Path(__file__).with_name("palettes.json").read_text())
+
+
+def run(*args):
+    result = subprocess.run(args, capture_output=True, text=True, timeout=30)
+    if result.returncode:
+        raise RuntimeError(result.stderr.strip() or result.stdout.strip() or args[0] + " failed")
+    return result.stdout.strip()
+
+
+def current():
+    # kreadconfig includes KDE's inherited defaults, unlike a bare INI reader.
+    return run("kreadconfig6", "--file", "kdeglobals", "--group", "General", "--key", "ColorScheme")
+
+
+def scheme_path(name):
+    roots = [Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share"))]
+    roots += [Path(p) for p in os.environ.get("XDG_DATA_DIRS", "/usr/local/share:/usr/share").split(":")]
+    return next((p / "color-schemes" / (name + ".colors") for p in roots
+                 if (p / "color-schemes" / (name + ".colors")).is_file()), None)
+
+
+def set_palette(palette):
+    path = scheme_path(palette["scheme"])
+    if path is None:
+        raise RuntimeError("Missing color scheme. Run kOMA-desktop-theme/setup/install-theme.sh first.")
+    config = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "kdeglobals"
+    cache = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "koma"
+    cache.mkdir(parents=True, exist_ok=True)
+    with (cache / "colors.lock").open("w") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise RuntimeError("Another palette switch is in progress. Try again.") from None
+        before = config.read_bytes() if config.exists() else None
+        previous = current()
+        try:
+            # Refresh even for the same scheme, and clear custom accent overrides.
+            for key in ("ColorScheme", "AccentColor"):
+                run("kwriteconfig6", "--file", "kdeglobals", "--group", "General", "--key", key, "--delete")
+            run("plasma-apply-colorscheme", palette["scheme"])
+            actual = configparser.ConfigParser(interpolation=None, strict=False)
+            actual.read(config)
+            rgb = ",".join(str(int(palette["color"][i:i + 2], 16)) for i in (1, 3, 5))
+            if current() != palette["scheme"] or actual.get("Colors:Selection", "BackgroundNormal", fallback="") != rgb:
+                raise RuntimeError("KDE did not apply the requested palette.")
+        except Exception:
+            # Restore persisted preferences if the external command fails.
+            if before is not None:
+                config.write_bytes(before)
+            if previous and scheme_path(previous):
+                try:
+                    run("plasma-apply-colorscheme", previous)
+                except Exception:
+                    pass
+            raise
+    return {"scheme": palette["scheme"], "name": palette["name"]}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("palette", choices=[p["id"] for p in PALETTES] + ["status", "list"])
+    args = parser.parse_args()
+    try:
+        if args.palette == "list":
+            result = PALETTES
+        elif args.palette == "status":
+            result = {"scheme": current(), "palettes": PALETTES}
+        else:
+            result = set_palette(next(p for p in PALETTES if p["id"] == args.palette))
+        print(json.dumps(result))
+    except (RuntimeError, OSError, subprocess.SubprocessError) as error:
+        print(str(error), file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

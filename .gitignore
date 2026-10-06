@@ -1,0 +1,23 @@
+# Third-party reference downloads and experiments
+/ref/
+/trial/
+
+# Personal configuration snapshots and installer state
+/setup/backup/
+/setup/keybindings/undo.json*
+*.bak
+*.bak-*
+__pycache__/
+*.py[cod]
+
+# Generated packages and tooling
+/dist/
+node_modules/
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Wallpaper collection: track only the two theme assets used by the installer
+/wallpapers/tron-aqua/*
+!/wallpapers/tron-aqua/Tron-1.jpg
+!/wallpapers/tron-aqua/tron-flower.jpg

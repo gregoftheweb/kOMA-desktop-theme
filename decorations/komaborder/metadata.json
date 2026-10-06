@@ -1,0 +1,11 @@
+{
+    "KPackageStructure": "KWin/Decoration",
+    "KPlugin": {
+        "Authors": [{ "Name": "Columbia Foundry" }],
+        "Description": "Omarchy-style: no title bar; pairs with the focus border effect",
+        "Id": "com.columbiafoundry.komaborder",
+        "License": "GPL-2.0-or-later",
+        "Name": "kOMA Border",
+        "Version": "0.1"
+    }
+}

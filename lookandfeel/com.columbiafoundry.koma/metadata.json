@@ -1,0 +1,16 @@
+{
+  "KPackageStructure": "Plasma/LookAndFeel",
+  "KPlugin": {
+    "Id": "com.columbiafoundry.koma",
+    "Name": "kOMA",
+    "Description": "KDE + Omarchy, with the Tron Aqua palette",
+    "Version": "0.1.0",
+    "License": "GPL-3.0-or-later",
+    "Authors": [
+      {
+        "Name": "Columbia Foundry"
+      }
+    ],
+    "Icon": "koma"
+  }
+}

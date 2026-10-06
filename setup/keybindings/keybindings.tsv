@@ -1,0 +1,104 @@
+# Omarchy-style global shortcuts for KDE Plasma 6.
+# keys<TAB>kind<TAB>target<TAB>label
+#   keys:  KDE key names, several separated by " | "; the list REPLACES the action's keys
+#   kind:  kwin / plasmashell / ksmserver  -> built-in action (target = action id)
+#          app  -> launch an installed .desktop file (target = desktop file name)
+#          cmd  -> run a command (a hidden koma-*.desktop launcher is generated)
+#          koma -> kOMA Launcher menu or action (target = menu id/alias)
+# Any other action already holding one of these keys loses that key.
+
+# ---- kOMA Launcher menus
+Meta+Space	koma	root	kOMA Launcher
+Meta+Alt+Space	koma	apps	Apps
+Meta+Esc	koma	system	System menu
+Meta+Ctrl+C	koma	capture	Capture menu
+Meta+Ctrl+O	koma	toggle	Toggle menu
+Meta+Ctrl+H	koma	hardware	Hardware menu
+Meta+K	koma	keybindings	Keybindings
+Meta+Ctrl+Space	koma	background	Background menu
+Meta+Ctrl+Shift+Space	koma	theme	Theme menu
+Meta+Ctrl+E	koma	trigger.emoji	Emoji picker
+Meta+Ctrl+S	koma	share	Share menu
+Meta+Ctrl+V	plasmashell	show-on-mouse-pos	Clipboard history
+Alt+F1	plasmashell	activate application launcher	Activate launcher (Super alone no longer opens it)
+
+# ---- Windows
+Alt+F4 | Meta+W	kwin	Window Close	Close window
+Meta+F	kwin	Window Fullscreen	Fullscreen
+Meta+PgUp | Meta+Ctrl+F	kwin	Window Maximize	Maximize
+Meta+Alt+F	kwin	Window Maximize Horizontal	Full width
+Meta+O	kwin	Window Above Other Windows	Keep above (pop out)
+Meta+Left | Meta+Alt+Left	kwin	Switch Window Left	Focus window left
+Meta+Right | Meta+Alt+Right	kwin	Switch Window Right	Focus window right
+Meta+Up | Meta+Alt+Up	kwin	Switch Window Up	Focus window above
+Meta+Down | Meta+Alt+Down	kwin	Switch Window Down	Focus window below
+Meta+Shift+Left	kwin	Window Quick Tile Left	Tile window left
+Meta+Shift+Right	kwin	Window Quick Tile Right	Tile window right
+Meta+Shift+Up	kwin	Window Quick Tile Top	Tile window top
+Meta+Shift+Down	kwin	Window Quick Tile Bottom	Tile window bottom
+Meta+Ctrl+Shift+Right	kwin	Window to Next Screen	Window to next monitor
+Meta+Ctrl+Shift+Left	kwin	Window to Previous Screen	Window to previous monitor
+Ctrl+F1 | Meta+1	kwin	Switch to Desktop 1	Desktop 1
+Ctrl+F2 | Meta+2	kwin	Switch to Desktop 2	Desktop 2
+Ctrl+F3 | Meta+3	kwin	Switch to Desktop 3	Desktop 3
+Ctrl+F4 | Meta+4	kwin	Switch to Desktop 4	Desktop 4
+Meta+5	kwin	Switch to Desktop 5	Desktop 5
+Meta+6	kwin	Switch to Desktop 6	Desktop 6
+Meta+7	kwin	Switch to Desktop 7	Desktop 7
+Meta+8	kwin	Switch to Desktop 8	Desktop 8
+Meta+9	kwin	Switch to Desktop 9	Desktop 9
+Meta+0	kwin	Switch to Desktop 10	Desktop 10
+Meta+Shift+1	kwin	Window to Desktop 1	Window to desktop 1
+Meta+Shift+2	kwin	Window to Desktop 2	Window to desktop 2
+Meta+Shift+3	kwin	Window to Desktop 3	Window to desktop 3
+Meta+Shift+4	kwin	Window to Desktop 4	Window to desktop 4
+Meta+Shift+5	kwin	Window to Desktop 5	Window to desktop 5
+Meta+Shift+6	kwin	Window to Desktop 6	Window to desktop 6
+Meta+Shift+7	kwin	Window to Desktop 7	Window to desktop 7
+Meta+Shift+8	kwin	Window to Desktop 8	Window to desktop 8
+Meta+Shift+9	kwin	Window to Desktop 9	Window to desktop 9
+Meta+Shift+0	kwin	Window to Desktop 10	Window to desktop 10
+Meta+Tab	kwin	Switch to Next Desktop	Next desktop
+Meta+Shift+Tab	kwin	Switch to Previous Desktop	Previous desktop
+Alt+Tab	kwin	Walk Through Windows	Next window
+Alt+Shift+Tab	kwin	Walk Through Windows (Reverse)	Previous window
+Ctrl+Alt+Tab	kwin	Switch to Next Screen	Focus next monitor
+Ctrl+Alt+Shift+Tab	kwin	Switch to Previous Screen	Focus previous monitor
+Meta+= | Meta+Ctrl+Z	kwin	view_zoom_in	Zoom in
+Meta+Ctrl+Alt+Z	kwin	view_actual_size	Reset zoom
+
+# ---- System & toggles
+Screensaver | Meta+Ctrl+L	ksmserver	Lock Session	Lock
+Meta+Ctrl+N	kwin	Toggle Night Color	Nightlight
+Meta+Ctrl+I	koma	trigger.toggle.idle-lock	Stay awake
+Meta+Ctrl+,	plasmashell	toggle do not disturb	Do not disturb
+Meta+Shift+Space	koma	trigger.toggle.top-bar	Panel autohide
+Meta+Ctrl+A	koma	trigger.hardware.audio	Audio settings
+Meta+Ctrl+B	koma	trigger.hardware.bluetooth	Bluetooth settings
+Meta+Ctrl+D	koma	trigger.hardware.display	Display settings
+Meta+Ctrl+W	koma	trigger.hardware.network	Network settings
+Meta+Ctrl+P	koma	trigger.hardware.power	Power settings
+Meta+Ctrl+T	app	org.kde.plasma-systemmonitor.desktop	System Monitor
+Print	koma	trigger.capture.screenshot.region	Screenshot region
+Alt+Print	koma	trigger.capture.screenrecord.region	Record region
+Meta+Print	koma	trigger.capture.color	Color picker
+Meta+Ctrl+Print	koma	trigger.capture.text	Text from screen (OCR)
+
+# ---- Apps
+Meta+Return	app	org.kde.konsole.desktop	Terminal
+Meta+Shift+B | Meta+Shift+Return	app	vivaldi-stable.desktop	Browser
+Meta+Alt+Shift+B	cmd	vivaldi-stable --incognito	Browser (private)
+Meta+Shift+N	app	vscodium.desktop	VSCodium
+Meta+Shift+F	app	org.kde.dolphin.desktop	File manager
+Meta+Shift+M	app	spotify.desktop	Music
+Meta+Shift+/	app	org.keepassxc.KeePassXC.desktop	Passwords
+Meta+A	app	claude-agent.desktop	Agent
+Meta+Shift+A	cmd	vivaldi-stable --app=https://claude.ai	Claude (web)
+Meta+Shift+Y	cmd	vivaldi-stable --app=https://youtube.com	YouTube
+Meta+Shift+P	cmd	vivaldi-stable --app=https://photos.google.com	Google Photos
+Meta+Shift+S	cmd	vivaldi-stable --app=https://maps.google.com	Google Maps
+Meta+Shift+X	cmd	vivaldi-stable --app=https://x.com	X
+Meta+Alt+Shift+X	cmd	vivaldi-stable --app=https://x.com/compose/post	X Post
+Meta+Alt+Shift+G	cmd	vivaldi-stable --app=https://web.whatsapp.com	WhatsApp
+Meta+Ctrl+Shift+G	cmd	vivaldi-stable --app=https://messages.google.com/web	Google Messages
+Meta+Alt+Shift+A	cmd	vivaldi-stable --app=https://grok.com	Grok

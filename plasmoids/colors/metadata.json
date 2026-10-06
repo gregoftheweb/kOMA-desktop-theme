@@ -1,0 +1,18 @@
+{
+  "KPackageStructure": "Plasma/Applet",
+  "KPlugin": {
+    "Id": "com.columbiafoundry.komacolors",
+    "Name": "kOMA Colors",
+    "Description": "Switch between the four kOMA desktop palettes",
+    "Icon": "preferences-desktop-color",
+    "Authors": [
+      {
+        "Name": "Columbia Foundry"
+      }
+    ],
+    "License": "MIT",
+    "Version": "0.1.0",
+    "Category": "Appearance"
+  },
+  "X-Plasma-API-Minimum-Version": "6.0"
+}
