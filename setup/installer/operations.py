@@ -400,6 +400,10 @@ class Installer:
                 self.emit('Window manager refreshed for the new top panel.')
             record['status'] = 'complete'
             self.emit('Appearance verified; Plasma Monochrome is active.')
+            # KWin lists window decorations when it starts, so the newly installed kOMA
+            # Border (no title bars) and freshly enabled effects only appear after the
+            # session restarts. Restarting KWin under a running Wayland session is not safe.
+            plan['remaining'].insert(0, 'SIGN OUT AND BACK IN to finish: title bars, window borders and tiling start with your next sign-in.')
         except Exception as error:
             record['status'] = 'failed'
             record['error'] = str(error)
