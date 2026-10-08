@@ -365,27 +365,6 @@ class Installer:
                 if not record['tiling_active']:
                     plan['remaining'].append('Krohnkite enabled; sign out/in, then reopen to verify activation.')
                 self.emit('Krohnkite: ' + ('active' if record['tiling_active'] else 'enabled; activation pending'))
-                if record['tiling_active'] and plan.get('hotkeys'):
-                    # The hotkey step finds conflicts in kglobalshortcutsrc, which KDE's
-                    # shortcut service writes a few seconds after Krohnkite registers its
-                    # defaults (Super+H/J/K/L, ...). Wait for them so kOMA's keys take over.
-                    self.wait_for_shortcuts('Krohnkite')
-            if plan.get('restore_hotkeys'):
-                self.env['KOMA_SHORTCUT_UNDO'] = plan['restore_hotkeys']
-                self.run(['python3', str(self.repo / 'setup/keybindings/apply.py'), '--undo'])
-                self.emit('Previous hotkeys restored; later edits preserved.')
-            if plan.get('hotkeys'):
-                helper = Path(self.env['HOME']) / '.local/bin/komalauncher'
-                helper.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(self.repo / 'setup/keybindings/komalauncher', helper)
-                helper.chmod(0o755)
-                browser_helper = helper.with_name('koma-browser')
-                shutil.copy2(self.repo / 'setup/keybindings/koma-browser', browser_helper)
-                browser_helper.chmod(0o755)
-                undo = folder / 'hotkeys-undo.json'
-                record['hotkey_undo'] = str(undo)
-                self.env['KOMA_SHORTCUT_UNDO'] = str(undo)
-                self.run(['python3', str(self.repo / 'setup/keybindings/apply.py'), '--apply'])
             if plan.get('panels'):
                 self.ensure_desktops()
                 from panels import script
@@ -407,6 +386,28 @@ class Installer:
                 for key in ('Image', 'PreviewImage'):
                     self.run(['kwriteconfig6', '--file', 'kscreenlockerrc', '--group', 'Greeter', '--group', 'Wallpaper', '--group', 'org.kde.image', '--group', 'General', '--key', key, image])
                 self.emit('Login and lock screen backgrounds applied; visible next time those screens open.')
+            # Hotkeys last, so every other component (Krohnkite's Super+H/J/K/L defaults
+            # in particular) has registered its shortcuts and kOMA's keys take them over.
+            # Conflicts are read from kglobalshortcutsrc, which KDE writes a few seconds
+            # after a registration, so wait for Krohnkite's entries first.
+            if plan.get('hotkeys') and record.get('tiling_active'):
+                self.wait_for_shortcuts('Krohnkite')
+            if plan.get('restore_hotkeys'):
+                self.env['KOMA_SHORTCUT_UNDO'] = plan['restore_hotkeys']
+                self.run(['python3', str(self.repo / 'setup/keybindings/apply.py'), '--undo'])
+                self.emit('Previous hotkeys restored; later edits preserved.')
+            if plan.get('hotkeys'):
+                helper = Path(self.env['HOME']) / '.local/bin/komalauncher'
+                helper.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(self.repo / 'setup/keybindings/komalauncher', helper)
+                helper.chmod(0o755)
+                browser_helper = helper.with_name('koma-browser')
+                shutil.copy2(self.repo / 'setup/keybindings/koma-browser', browser_helper)
+                browser_helper.chmod(0o755)
+                undo = folder / 'hotkeys-undo.json'
+                record['hotkey_undo'] = str(undo)
+                self.env['KOMA_SHORTCUT_UNDO'] = str(undo)
+                self.run(['python3', str(self.repo / 'setup/keybindings/apply.py'), '--apply'])
             self.deploy_installer()
             if plan.get('panels'):
                 # Give Plasma time to publish the new panel's reserved screen area
