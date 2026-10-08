@@ -98,7 +98,9 @@ without reapplying the Global Theme.
 ### Window decoration: kOMA Border
 
 `com.columbiafoundry.komaborder`, an Aurorae decoration with no title bar, as in
-Omarchy. It pairs with **KDE-Rounded-Corners** (GPL-3.0-only), a compiled KWin
+Omarchy. KWin only finds a newly installed decoration at the next sign-in, so the
+installer also adds a KWin window rule (`koma-no-titlebar` in `kwinrulesrc`, beside
+any rules you already have) that removes title bars from normal windows at once. It pairs with **KDE-Rounded-Corners** (GPL-3.0-only), a compiled KWin
 effect that draws the colored outline around the focused window. The effect is
 optional; the decoration works without it.
 

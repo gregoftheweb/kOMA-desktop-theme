@@ -11,7 +11,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-STUBS = ("kpackagetool6", "kwriteconfig6", "qdbus6", "plasma-apply-lookandfeel", "plasma-apply-colorscheme", "plasma-apply-wallpaperimage")
+STUBS = ("kpackagetool6", "kwriteconfig6", "qdbus6", "plasma-apply-lookandfeel", "plasma-apply-colorscheme", "plasma-apply-wallpaperimage", "kreadconfig6")
 
 
 class FreshHomeTests(unittest.TestCase):
@@ -66,6 +66,7 @@ class FreshHomeTests(unittest.TestCase):
         self.assertIn("plasma-apply-lookandfeel --apply com.columbiafoundry.koma", calls)
         self.assertIn("plasma-apply-colorscheme kOMATronAqua", calls)
         self.assertRegex(calls, r"plasma-apply-wallpaperimage \S+/wallpapers/kOMA-Lightcycles\n")
+        self.assertIn("kwinrulesrc --group koma-no-titlebar --key noborder true", calls)
 
     def test_running_twice_in_the_same_home_works(self):
         self.run_install("--apply")

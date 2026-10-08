@@ -13,7 +13,7 @@ done
 (cd "$repo/icons" && sha256sum --check plasma-monochrome-icons.tar.gz.sha256)
 backup="$config/koma/backups/$(date +%Y%m%d-%H%M%S-%N)"
 mkdir -p "$backup"
-for file in kdeglobals plasmarc kwinrc kcminputrc ksplashrc plasma-org.kde.plasma.desktop-appletsrc plasmashellrc kdedefaults; do
+for file in kdeglobals plasmarc kwinrc kwinrulesrc kcminputrc ksplashrc plasma-org.kde.plasma.desktop-appletsrc plasmashellrc kdedefaults; do
   [[ ! -e "$config/$file" ]] || cp -a "$config/$file" "$backup/"
 done
 echo "Appearance backup: $backup"
@@ -52,6 +52,8 @@ if [[ ${1:-} == --apply ]]; then
   kwriteconfig6 --file kdeglobals --group General --key ColorScheme --delete
   kwriteconfig6 --file kdeglobals --group General --key AccentColor --delete
   plasma-apply-colorscheme kOMATronAqua
+  # No title bars now; the kOMA Border decoration alone would wait for the next sign-in
+  bash "$repo/setup/apply-no-titlebars.sh"
   # The Global Theme's wallpaper only reaches desktops created after it; set it on
   # the existing ones now instead of at the next login.
   plasma-apply-wallpaperimage "$data/wallpapers/kOMA-Lightcycles"
