@@ -1,0 +1,12 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Columbia Foundry"
+            }
+        ],
+        "Id": "kOMA-River",
+        "Name": "kOMA River",
+        "Description": "A misty magenta canyon with an aqua river"
+    }
+}

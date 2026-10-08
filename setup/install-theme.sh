@@ -33,7 +33,7 @@ mkdir -p "$data/wallpapers/kOMA-Tron-1/contents/images"
 cp "$repo/wallpapers/tron-aqua/Tron-1.jpg" "$data/wallpapers/kOMA-Tron-1/contents/images/1280x1280.jpg"
 cp "$repo/wallpapers/kOMA-Tron-1/metadata.json" "$data/wallpapers/kOMA-Tron-1/metadata.json"
 # Ready-made wallpaper packages (the default is kOMA Lightcycles)
-for wallpaper in kOMA-Lightcycles; do
+for wallpaper in kOMA-Lightcycles kOMA-Powder kOMA-River; do
   rm -rf "${data:?}/wallpapers/$wallpaper"
   cp -a "$repo/wallpapers/$wallpaper" "$data/wallpapers/$wallpaper"
 done

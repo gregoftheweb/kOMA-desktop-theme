@@ -1,0 +1,12 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Columbia Foundry"
+            }
+        ],
+        "Id": "kOMA-Powder",
+        "Name": "kOMA Powder",
+        "Description": "Neon line drawing of a skier carving down a mountain"
+    }
+}
