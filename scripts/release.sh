@@ -21,7 +21,7 @@ paths=(install.sh uninstall.sh README.md LICENSES.md docs setup packages icons w
 
 rm -rf dist
 mkdir -p dist
-git archive --format=tar --prefix="koma-desktop-$version/" HEAD -- "${paths[@]}" |
+git archive --format=tar --prefix="koma-desktop-$version/" HEAD -- "${paths[@]}" ":(exclude)docs/screenshots" |
   gzip -n -9 >"dist/$bundle"
 sed "s/@VERSION@/$version/" get-koma.sh >dist/get-koma.sh
 (cd dist && sha256sum "$bundle" get-koma.sh >SHA256SUMS)
