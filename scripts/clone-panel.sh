@@ -8,7 +8,7 @@ TEMPLATE="${1:-28}"
 CFG=~/.config/plasma-org.kde.plasma.desktop-appletsrc
 ts=$(date +%Y%m%d-%H%M%S)
 cp -a "$CFG" "$CFG.bak-$ts"
-cp -a ~/.config/plasmashellrc ~/.config/plasmashellrc.bak-$ts
+cp -a ~/.config/plasmashellrc ~/.config/plasmashellrc.bak-"$ts"
 echo "backup: $CFG.bak-$ts"
 
 qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "

@@ -5,55 +5,54 @@
     "version": "0.2.0",
     "license": "MIT",
     "asset": "com.columbiafoundry.komalauncher-0.2.0.plasmoid",
-    "sha256": "b5e23f86ef816fe2e27cb509667106a96dc30ae6480b1f4834c856a9379d95c8",
+    "sha256": "4a0e38e07344de5ac27dba5ef73403f2c74c9924ea3824a80472a6d6ee42532d",
     "optional": false,
     "source": "https://github.com/gregoftheweb/kOMA-Launcher",
-    "commit": "9d5fc7c8c275be286f1fd2e676b2eb5e871a8641",
-    "local_patch": "Local 0.2.0 build: branded icon, installer entry, CSV ordering, two-column keybindings, one-time panel overlap check."
+    "commit": "a500a512683208442853e0d3d54c122fad9cd0b5"
   },
   {
     "name": "Workspace Indicator (Chet)",
     "id": "kde-desktop.workspaces",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "license": "GPL-2.0-or-later",
-    "asset": "koma-workspace-indicator-0.2.2.plasmoid",
-    "sha256": "e7928da53d464e1ad1511b228060400409288ef4af8c6ed99cd6e4705510101d",
+    "asset": "koma-workspace-indicator-0.2.3.plasmoid",
+    "sha256": "c0a9b1dd7e2ae847f75f2b1451910eb160738ebfdaf5a1af547eecef48725203",
     "optional": false,
     "source": "https://github.com/gregoftheweb/kOMA-Workspace-Indicator",
-    "commit": "90a715f19442d90149d831f5cbbd473e7a70347d"
+    "commit": "7dfc908b1a81975bf659bdf17d42c7cf0b5f1a4c"
   },
   {
     "name": "Plugin Manager",
     "id": "com.columbiafoundry.komaplugins",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "license": "MIT",
-    "asset": "com.columbiafoundry.komaplugins-0.4.1.plasmoid",
-    "sha256": "266e218381630ab9ec5fdd5c19be9bb2a4d27ff70c47e5a44c6537bebcce960e",
+    "asset": "com.columbiafoundry.komaplugins-0.4.2.plasmoid",
+    "sha256": "b4c73b46e8e33be5eee9d6efe5064133e3e2b7a8b65fdfe76cd28b87d4cf1875",
     "optional": false,
     "source": "https://github.com/gregoftheweb/kOMA-Plugins",
-    "commit": "5951c30fbc0079fa2e92629a4bd9454faefa2717"
+    "commit": "885ba6651e675a801fbb386f3f21382169bc8139"
   },
   {
     "name": "Network Manager",
     "id": "com.columbiafoundry.komanetworkmanager",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "license": "MIT",
-    "asset": "com.columbiafoundry.komanetworkmanager-0.1.0.plasmoid",
-    "sha256": "c1b7746e610bd10d87f5dded2f61441cda6b2a306538bae0e2a4d9c9c4ff18da",
+    "asset": "com.columbiafoundry.komanetworkmanager-0.1.1.plasmoid",
+    "sha256": "29dc5aa93913b999b139091f06e8c37bbe4295e0db06aee0c67d666d19952eab",
     "optional": false,
     "source": "https://github.com/gregoftheweb/kOMA-NetworkManager",
-    "commit": "a6f7bcedf36ce4d9761b662ea9ea8087aeceb24d"
+    "commit": "a68308aa388aa677e61cee31b76e33eb7d00e50d"
   },
   {
     "name": "Music Thing",
     "id": "com.columbiafoundry.komamusicthing",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "license": "MIT",
-    "asset": "com.columbiafoundry.komamusicthing-0.2.1.plasmoid",
-    "sha256": "3424b260d0d46fd92644408bb5feca12bf616e3c110583b4717a7a4275eff1e5",
+    "asset": "com.columbiafoundry.komamusicthing-0.3.0.plasmoid",
+    "sha256": "e3a9e0a3719c4563cb9c7f5f514cdcf964937ff4e8b2319cd51bd8c86473197f",
     "optional": true,
     "source": "https://github.com/gregoftheweb/kOMA-MusicThing",
-    "commit": "5e68e94fa0d10d08ad8ef259bd80ad3b479f36f6"
+    "commit": "0ca77bc81bfb7632ec6e27440a32a2d2c23cb5b9"
   },
   {
     "name": "Advanced Weather",
@@ -76,7 +75,7 @@
     "sha256": "a2ab2c8de07ad9b5e3dfe67ab2971160bb2b3c0cb0f63f6bce275badfcc8579c",
     "optional": true,
     "option": "power",
-    "source": "https://store.kde.org/p/2377504",
+    "source": "https://github.com/gregoftheweb/kOMA-PowerControl",
     "upstream": "https://github.com/gregoftheweb/kOMA-PowerControl"
   },
   {

@@ -1,0 +1,9 @@
+{
+  "name": "koma-desktop-theme",
+  "private": true,
+  "description": "Dev tooling for the kOMA desktop theme (shell lint); the theme itself has no npm dependencies.",
+  "license": "SEE LICENSE IN LICENSES.md",
+  "devDependencies": {
+    "shellcheck": "^3.1.0"
+  }
+}
