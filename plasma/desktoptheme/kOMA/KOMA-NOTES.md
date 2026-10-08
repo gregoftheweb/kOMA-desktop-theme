@@ -183,7 +183,6 @@ the installer bundles their pinned, checksum-verified releases.
 | [kOMA Power Control](https://github.com/gregoftheweb/kOMA-PowerControl) | 0.1.0 | Battery charge and health, power profiles, and PLAID Power, which holds off suspend, dimming and locking until turned off | Power menu |
 | [kOMA Music Thing](https://github.com/gregoftheweb/kOMA-MusicThing) | 0.3.0 | Compact MPD player; expands to run rmpc inside the popup, with an optional cava visualizer; guided MPD setup | Music |
 | kOMA Colors | 0.1.0 | Switches between the four kOMA color schemes (part of this theme) | Theme switcher |
-| kOMA Random Image | 0.1.0 | Shows a random image from a chosen folder, centered on the active screen (not yet published) | |
 | kOMA Systray | script | Keeps tray entries in the tray popup so only the arrow shows on the panel (not yet published) | |
 
 Third-party components the installer can add, unchanged and with their licenses:
