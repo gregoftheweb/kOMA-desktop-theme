@@ -175,7 +175,7 @@ the installer bundles their pinned, checksum-verified releases.
 
 | Component | Version | What it does | Omarchy counterpart |
 | --- | --- | --- | --- |
-| [kOMA Launcher](https://github.com/gregoftheweb/kOMA-Launcher) | 0.2.1 | Keyboard-driven launcher card on the active screen with type-to-search across apps and the whole Omarchy menu tree (Apps, Learn, Trigger, Style, Setup, About, System), KDE-native actions, live keybinding reference, wallpaper picker, `komalauncher open <menu>` for hotkeys | Launcher and Omarchy menu |
+| [kOMA Launcher](https://github.com/gregoftheweb/kOMA-Launcher) | 0.2.2 | Keyboard-driven launcher card on the active screen with type-to-search across apps and the whole Omarchy menu tree (Apps, Learn, Trigger, Style, Setup, About, System), KDE-native actions, live keybinding reference, wallpaper picker, `komalauncher open <menu>` for hotkeys | Launcher and Omarchy menu |
 | [kOMA Workspace Indicator](https://github.com/gregoftheweb/kOMA-Workspace-Indicator) | 0.2.3 | Numbered workspaces with app icons ordered by window position across all screens; derived from Desktop Switcher 1.0 by Sm1Tee (GPL-2.0-or-later) | Waybar workspaces |
 | [kOMA Plugins](https://github.com/gregoftheweb/kOMA-Plugins) | 0.4.2 | Lists installed widgets, KWin scripts, effects and decorations; enable, disable, remove; install from the KDE Store or git; hourly update checks with in-widget updates | Plugin manager |
 | [kOMA Network Manager](https://github.com/gregoftheweb/kOMA-NetworkManager) | 0.1.1 | Live ping, packet loss and traffic, IP and gateway, Wi-Fi networks, speed samples, one-click DNS (DHCP, Cloudflare, Google, custom) | Network panel |
