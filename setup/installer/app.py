@@ -118,6 +118,9 @@ def ui(screen):
                 offset += 1
             draw(8 + i + offset, ('> ' if selected == i else '  ') + option,
                  curses.color_pair(2) if selected == i else 0)
+        # messages can hold several lines (a failed command's output); curses would
+        # wrap them to column 0 underneath the following rows
+        details = [part for line in details for part in str(line).splitlines() or ['']]
         for i, line in enumerate(details):
             draw(10 + len(options) + separator_rows + i, line)
         draw(height - 2, '↑/↓ Move   Enter/Space Select   Esc Back', curses.color_pair(1))

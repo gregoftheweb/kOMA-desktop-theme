@@ -30,6 +30,7 @@ cp "$repo/branding/koma.svg" "$data/icons/hicolor/scalable/apps/koma.svg"
 cp "$repo"/color-schemes/kOMA*.colors "$data/color-schemes/"
 cp -a "$repo/plasma/desktoptheme/kOMA/." "$data/plasma/desktoptheme/kOMA/"
 # Ready-made wallpaper packages (the default is kOMA Lightcycles)
+mkdir -p "$data/wallpapers"
 for wallpaper in kOMA-Lightcycles kOMA-Powder kOMA-River; do
   rm -rf "${data:?}/wallpapers/$wallpaper"
   cp -a "$repo/wallpapers/$wallpaper" "$data/wallpapers/$wallpaper"
