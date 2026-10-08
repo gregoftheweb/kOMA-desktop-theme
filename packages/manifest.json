@@ -2,13 +2,13 @@
   {
     "name": "Launcher",
     "id": "com.columbiafoundry.komalauncher",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "license": "MIT",
-    "asset": "com.columbiafoundry.komalauncher-0.2.2.plasmoid",
-    "sha256": "e7cad3bc8674fed002c269dc573108b9d1aac28ea9d22fcedc227e4639b4b340",
+    "asset": "com.columbiafoundry.komalauncher-0.2.3.plasmoid",
+    "sha256": "24fefbd1815e8ea28d95bee74c26c622b14e400cceb2fd73aba2245ada159167",
     "optional": false,
     "source": "https://github.com/gregoftheweb/kOMA-Launcher",
-    "commit": "ec46be714281d31dabd063f8fcb85082f0c18373"
+    "commit": "e47a750ab83107b91f6e48170faa553e625227ad"
   },
   {
     "name": "Workspace Indicator (Chet)",

@@ -408,6 +408,14 @@ class Installer:
                 record['hotkey_undo'] = str(undo)
                 self.env['KOMA_SHORTCUT_UNDO'] = str(undo)
                 self.run(['python3', str(self.repo / 'setup/keybindings/apply.py'), '--apply'])
+            if plan.get('tiling'):
+                # Reload the border effect last, after colors, rules and hotkeys, so the
+                # windows already open get their outline now rather than at the next login.
+                effects = ['qdbus6', 'org.kde.KWin', '/Effects']
+                subprocess.run(effects + ['org.kde.kwin.Effects.unloadEffect', 'kwin4_effect_shapecorners'], env=self.env, capture_output=True)
+                subprocess.run(effects + ['org.kde.kwin.Effects.loadEffect', 'kwin4_effect_shapecorners'], env=self.env, capture_output=True)
+                loaded = subprocess.run(effects + ['org.kde.kwin.Effects.isEffectLoaded', 'kwin4_effect_shapecorners'], env=self.env, capture_output=True, text=True).stdout.strip() == 'true'
+                self.emit('Focus border ' + ('active.' if loaded else 'starts at your next sign-in.'))
             self.deploy_installer()
             if plan.get('panels'):
                 # Give Plasma time to publish the new panel's reserved screen area
