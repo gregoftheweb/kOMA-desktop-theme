@@ -2,8 +2,9 @@
 
 Custom KDE Plasma 6 (Wayland) desktop inspired by Omarchy, maintained by Columbia Foundry.
 
-**Work in progress:** the appearance installer is available; the complete desktop
-bundle, dependency management, and Setup widget are still being prepared.
+**Installer preview available:** run `./install.sh` for appearance or pinned desktop
+components, with progress and restore. See [installer guide](docs/installer.md).
+Panel setup, hotkey switching, tiling, and the Setup widget remain in development.
 The local preparation plan lives outside this repository at
 `../Docs/theme-preparation-plan.md` in the kOMATheme workspace.
 

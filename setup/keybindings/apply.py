@@ -20,14 +20,18 @@ import os
 import re
 import subprocess
 import sys
+import shutil
+import shlex
+import time
 
 import dbus
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TSV = os.path.join(HERE, "keybindings.tsv")
-UNDO = os.path.join(HERE, "undo.json")
-RC = os.path.expanduser("~/.config/kglobalshortcutsrc")
-APPS_DIR = os.path.expanduser("~/.local/share/applications")
+STATE = os.environ.get("XDG_STATE_HOME", os.path.expanduser("~/.local/state"))
+UNDO = os.environ.get("KOMA_SHORTCUT_UNDO", os.path.join(STATE, "koma", "hotkeys-undo.json"))
+RC = os.path.join(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "kglobalshortcutsrc")
+APPS_DIR = os.path.join(os.environ.get("XDG_DATA_HOME", os.path.expanduser("~/.local/share")), "applications")
 KOMALAUNCHER = os.path.expanduser("~/.local/bin/komalauncher")
 
 MODS = {"meta": 0x10000000, "ctrl": 0x04000000, "alt": 0x08000000, "shift": 0x02000000}
@@ -97,6 +101,8 @@ def read_rc():
     """{(component, action): [canonical keys]} from kglobalshortcutsrc."""
     holders = {}
     comp = None
+    if not os.path.exists(RC):
+        return holders
     with open(RC) as f:
         for line in f:
             line = line.rstrip("\n")
@@ -148,6 +154,8 @@ def action_id(row):
 
 
 def desktop_exec(row):
+    if row["label"] == "Browser":
+        return os.path.expanduser("~/.local/bin/koma-browser")
     if row["kind"] == "koma":
         return KOMALAUNCHER + " open " + row["target"]
     return row["target"]
@@ -200,6 +208,9 @@ class Accel:
 
     def register(self, a, what):
         self.iface.doRegister(self.aid(a))
+        # SetPresent (2) marks a generated service action active; merely changing
+        # its foreign shortcut keys can leave a registered action inactive.
+        self.iface.setShortcutKeys(self.aid(a), self.encode(self.get(a)), dbus.UInt32(6))
         self.check(what)
 
 
@@ -235,7 +246,29 @@ def plan(rows):
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "--dry-run"
     rows = load_rows()
-    steps, takeovers = plan(rows)
+    holders = read_rc()
+    available = []
+    for row in rows:
+        kind, target = row['kind'], row['target']
+        if kind == 'app' and row['label'] == 'Browser':
+            result = subprocess.run(['xdg-settings', 'get', 'default-web-browser'], capture_output=True, text=True)
+            browser = result.stdout.strip()
+            if browser and '/' not in browser and browser.endswith('.desktop'):
+                row['target'] = target = browser
+        enabled = True
+        if kind in ('kwin', 'plasmashell', 'ksmserver'):
+            enabled = (kind, target) in holders
+        elif kind == 'app':
+            enabled = any(os.path.isfile(os.path.join(base, 'applications', target)) for base in
+                          [os.path.dirname(APPS_DIR)] + os.environ.get('XDG_DATA_DIRS', '/usr/local/share:/usr/share').split(':'))
+        elif kind == 'cmd':
+            enabled = bool(shutil.which(shlex.split(target)[0]))
+        if enabled:
+            available.append(row)
+        else:
+            print('Skipped unavailable target: ' + row['label'])
+    steps, takeovers = plan(available)
+
 
     if mode == "--dry-run":
         for s in steps:
@@ -256,6 +289,8 @@ def main():
         print("no-op write OK; Window Close keys:", [hex(k) for k in accel.get(a)])
         return
 
+    os.makedirs(os.path.dirname(UNDO), exist_ok=True)
+    os.makedirs(APPS_DIR, exist_ok=True)
     undo = json.load(open(UNDO)) if os.path.exists(UNDO) else {}
 
     def remember(a):
@@ -264,8 +299,16 @@ def main():
             undo[key] = {"aid": a, "keys": accel.get(a)}
             json.dump(undo, open(UNDO, "w"), indent=1)
 
+    def applied(a):
+        key = json.dumps(a[:2])
+        undo[key]['applied'] = accel.get(a)
+        json.dump(undo, open(UNDO, 'w'), indent=1)
+
     if mode == "--undo":
         for entry in undo.values():
+            if accel.get(entry['aid']) != entry.get('applied'):
+                print('Preserved later shortcut edit: ' + '/'.join(entry['aid'][:2]))
+                continue
             accel.set(entry["aid"], entry["keys"], "undo " + "/".join(entry["aid"][:2]))
             print("restored", "/".join(entry["aid"][:2]), [hex(k) for k in entry["keys"]])
         os.rename(UNDO, UNDO + ".applied")
@@ -283,6 +326,7 @@ def main():
             if keep != current:
                 remember(a)
                 accel.set(a, keep, "freeing keys on " + "/".join(a[:2]))
+                applied(a)
                 print("freed  %-50s now %s" % ("/".join(a[:2]), [hex(k) for k in keep]))
         new_files = False
         for s in todo:
@@ -293,13 +337,28 @@ def main():
             subprocess.run(["kbuildsycoca6"], capture_output=True)
         for s in todo:
             a, row = s["aid"], s["row"]
-            if row["kind"] in ("app", "cmd", "koma"):
-                accel.register(a, "registering " + a[0])
             remember(a)
-            accel.set(a, s["ints"], "setting " + row["label"])
-            got = accel.get(a)
-            ok = sorted(got) == sorted(s["ints"])
+            generated = row["kind"] in ("app", "cmd", "koma")
+            attempts = 5 if generated else 1
+            for attempt in range(attempts):
+                if generated:
+                    accel.register(a, "registering " + a[0])
+                    # Activate and assign together. A newly discovered desktop service
+                    # can still be registering after the service-cache rebuild.
+                    accel.iface.setShortcutKeys(accel.aid(a), accel.encode(s["ints"]), dbus.UInt32(6))
+                    accel.check("setting " + row["label"])
+                else:
+                    accel.set(a, s["ints"], "setting " + row["label"])
+                got = accel.get(a)
+                ok = sorted(got) == sorted(s["ints"])
+                if ok:
+                    break
+                if attempt + 1 < attempts:
+                    time.sleep(0.25)
+            applied(a)
             print("%s  %-38s %s" % ("ok " if ok else "MISMATCH", " | ".join(row["keys"]), row["label"]))
+            if not ok:
+                raise RuntimeError("Shortcut verification failed: " + row["label"])
         print("kwin_wayland PID unchanged:", accel.pid)
         return
 

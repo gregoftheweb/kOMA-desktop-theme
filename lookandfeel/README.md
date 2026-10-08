@@ -14,8 +14,7 @@ under `~/.config/koma/backups/` before installation. It does not reset panels,
 shortcuts, or Krohnkite settings. Tiling remains independent and optional.
 This is the appearance package, not yet the complete fresh-machine installer.
 
-The theme selects Breeze application styling, Vivid-Glassy-Dark-Icons (install
-separately), Breeze cursors, and the bundled kOMA Border decoration. Existing
+The theme selects Breeze application styling, Plasma Monochrome Icons (bundled and installed automatically), Breeze cursors, and the bundled kOMA Border decoration. Existing
 focus-border effect settings are retained; the compositor effect is a separate
 dependency managed by `setup/apply-focus-border.sh`.
 
@@ -55,7 +54,7 @@ Default wallpaper: `Tron-1.jpg`, installed as the `kOMA-Tron-1` wallpaper
 package from `wallpapers/tron-aqua/Tron-1.jpg`. Selected by the Global Theme
 Wallpaper default.
 
-Audio Control: install the separate `/mnt/devplex/kOMA-AudioControl` project
+Audio Control: install the separate [kOMA Audio Control](https://github.com/gregoftheweb/kOMA-AudioControl) project
 with `bin/install` (or `--no-place` before applying a fresh layout). Its widget,
 `com.columbiafoundry.komaaudiocontrol`, is included before Music Thing in the
 default panel. It uses native Plasma styling and follows the active palette.

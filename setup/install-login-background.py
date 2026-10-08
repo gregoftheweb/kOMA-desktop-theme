@@ -7,6 +7,8 @@ import datetime
 import os
 from pathlib import Path
 import shutil
+import json
+import hashlib
 
 
 def read_config(path):
@@ -19,8 +21,34 @@ def read_config(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--wallpaper', type=Path)
+    parser.add_argument('--backup-dir', type=Path)
+    parser.add_argument('--restore', type=Path)
     parser.add_argument('--theme', help='Override the detected active SDDM theme')
     args = parser.parse_args()
+    if args.restore:
+        if os.geteuid() != 0:
+            parser.error('Restore requires administrator access')
+        folder = args.restore.resolve()
+        if folder.parent != Path('/var/backups/koma-sddm'):
+            parser.error('Invalid backup location')
+        entries = json.loads((folder / 'record.json').read_text())
+        conflicts = []
+        for name, entry in entries.items():
+            target = Path(name)
+            current = hashlib.sha256(target.read_bytes()).hexdigest() if target.is_file() else None
+            if current == entry['before']:
+                continue
+            if current != entry['after']:
+                conflicts.append(name)
+                continue
+            if entry['backup']:
+                shutil.copy2(folder / entry['backup'], target)
+            else:
+                target.unlink(missing_ok=True)
+        if conflicts:
+            parser.error('Preserved later login background edits: ' + ', '.join(conflicts))
+        print('Login background restored.')
+        return
     root = Path(__file__).resolve().parent.parent
     image = args.wallpaper or root / 'wallpapers/tron-aqua/Tron-1.jpg'
     if not image.is_file():
@@ -38,10 +66,15 @@ def main():
     if os.geteuid() != 0:
         parser.error('Run with sudo; SDDM wallpaper and theme settings are system-wide')
     timestamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S-%f')
-    backup = Path('/var/backups/koma-sddm') / timestamp
-    backup.mkdir(parents=True)
+    backup = args.backup_dir or Path('/var/backups/koma-sddm') / timestamp
+    if backup.resolve().parent != Path('/var/backups/koma-sddm'):
+        parser.error('Invalid backup location')
+    backup.mkdir(parents=True, exist_ok=False)
     override = directory / 'theme.conf.user'
     destination = Path('/usr/share/backgrounds/koma') / ('login' + image.suffix.lower())
+    entries = {}
+    for target in (override, destination):
+        entries[str(target)] = {'before': hashlib.sha256(target.read_bytes()).hexdigest() if target.is_file() else None, 'backup': target.name if target.is_file() else None}
     if override.exists():
         shutil.copy2(override, backup / 'theme.conf.user')
     if destination.exists():
@@ -60,6 +93,9 @@ def main():
         config.write(output, space_around_delimiters=False)
     temporary.chmod(0o644)
     temporary.replace(override)
+    for target in (override, destination):
+        entries[str(target)]['after'] = hashlib.sha256(target.read_bytes()).hexdigest()
+    (backup / 'record.json').write_text(json.dumps(entries, indent=2) + '\n')
     print(f'SDDM {theme} login wallpaper: {destination}')
     print(f'Previous settings saved in {backup}')
     print('Applies at the next login screen. The running session was not restarted.')

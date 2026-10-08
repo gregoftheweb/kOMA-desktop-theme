@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# komalauncher open [menu]   open (or close, if already showing) a menu
+#   menu: root (default), apps, system, capture, toggle, hardware, style,
+#         setup, learn, keybindings, emoji, ... any id or alias in the menu.
+# Talks to the kOMA Launcher widget inside plasmashell, so it's instant.
+set -euo pipefail
+cmd=${1:-open}; route=${2:-root}
+case "$cmd" in
+  open) ;;
+  *) echo "usage: komalauncher open [menu]" >&2; exit 2 ;;
+esac
+route=${route//[^A-Za-z0-9._-]/}
+out=$(qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "
+var ws = [];
+panels().forEach(function (p) { ws = ws.concat(p.widgets('com.columbiafoundry.komalauncher')); });
+if (ws.length === 0) { print('no-widget'); } else {
+  var w = ws[0];
+  w.currentConfigGroup = ['General'];
+  w.writeConfig('openRequest', '$route|' + Date.now());
+  w.reloadConfig();
+  print('ok');
+}")
+[ "$out" = ok ] || { echo "komalauncher: kOMA Launcher widget not found on any panel ($out)" >&2; exit 1; }

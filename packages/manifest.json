@@ -1,0 +1,108 @@
+[
+  {
+    "name": "Launcher",
+    "id": "com.columbiafoundry.komalauncher",
+    "version": "0.2.0",
+    "license": "MIT",
+    "asset": "com.columbiafoundry.komalauncher-0.2.0.plasmoid",
+    "sha256": "b5e23f86ef816fe2e27cb509667106a96dc30ae6480b1f4834c856a9379d95c8",
+    "optional": false,
+    "source": "https://github.com/gregoftheweb/kOMA-Launcher",
+    "commit": "9d5fc7c8c275be286f1fd2e676b2eb5e871a8641",
+    "local_patch": "Local 0.2.0 build: branded icon, installer entry, CSV ordering, two-column keybindings, one-time panel overlap check."
+  },
+  {
+    "name": "Workspace Indicator (Chet)",
+    "id": "kde-desktop.workspaces",
+    "version": "0.2.2",
+    "license": "GPL-2.0-or-later",
+    "asset": "koma-workspace-indicator-0.2.2.plasmoid",
+    "sha256": "e7928da53d464e1ad1511b228060400409288ef4af8c6ed99cd6e4705510101d",
+    "optional": false,
+    "source": "https://github.com/gregoftheweb/kOMA-Workspace-Indicator",
+    "commit": "90a715f19442d90149d831f5cbbd473e7a70347d"
+  },
+  {
+    "name": "Plugin Manager",
+    "id": "com.columbiafoundry.komaplugins",
+    "version": "0.4.1",
+    "license": "MIT",
+    "asset": "com.columbiafoundry.komaplugins-0.4.1.plasmoid",
+    "sha256": "266e218381630ab9ec5fdd5c19be9bb2a4d27ff70c47e5a44c6537bebcce960e",
+    "optional": false,
+    "source": "https://github.com/gregoftheweb/kOMA-Plugins",
+    "commit": "5951c30fbc0079fa2e92629a4bd9454faefa2717"
+  },
+  {
+    "name": "Network Manager",
+    "id": "com.columbiafoundry.komanetworkmanager",
+    "version": "0.1.0",
+    "license": "MIT",
+    "asset": "com.columbiafoundry.komanetworkmanager-0.1.0.plasmoid",
+    "sha256": "c1b7746e610bd10d87f5dded2f61441cda6b2a306538bae0e2a4d9c9c4ff18da",
+    "optional": false,
+    "source": "https://github.com/gregoftheweb/kOMA-NetworkManager",
+    "commit": "a6f7bcedf36ce4d9761b662ea9ea8087aeceb24d"
+  },
+  {
+    "name": "Music Thing",
+    "id": "com.columbiafoundry.komamusicthing",
+    "version": "0.2.1",
+    "license": "MIT",
+    "asset": "com.columbiafoundry.komamusicthing-0.2.1.plasmoid",
+    "sha256": "3424b260d0d46fd92644408bb5feca12bf616e3c110583b4717a7a4275eff1e5",
+    "optional": true,
+    "source": "https://github.com/gregoftheweb/kOMA-MusicThing",
+    "commit": "5e68e94fa0d10d08ad8ef259bd80ad3b479f36f6"
+  },
+  {
+    "name": "Advanced Weather",
+    "id": "org.kde.plasma.advanced-weather-widget",
+    "version": "1.8.0",
+    "license": "GPL-2.0-or-later",
+    "asset": "advanced-weather-widget-1.8.0.plasmoid",
+    "sha256": "057484237d6e7e176e8679460499b5f13babb34f5a4efdafcd5cee45cd9a1181",
+    "optional": true,
+    "option": "weather",
+    "source": "https://github.com/pnedyalkov91/advanced-weather-widget",
+    "commit": "71433e6d56e7e9337df368f3db5ffbcf01e423af"
+  },
+  {
+    "name": "Power Control",
+    "id": "com.columbiafoundry.komapowercontrol",
+    "version": "0.1.0",
+    "license": "MIT",
+    "asset": "com.columbiafoundry.komapowercontrol-0.1.0.plasmoid",
+    "sha256": "a2ab2c8de07ad9b5e3dfe67ab2971160bb2b3c0cb0f63f6bce275badfcc8579c",
+    "optional": true,
+    "option": "power",
+    "source": "https://store.kde.org/p/2377504",
+    "upstream": "https://github.com/gregoftheweb/kOMA-PowerControl"
+  },
+  {
+    "name": "Audio Control",
+    "id": "com.columbiafoundry.komaaudiocontrol",
+    "version": "0.1.0",
+    "license": "MIT",
+    "asset": "com.columbiafoundry.komaaudiocontrol-0.1.0.plasmoid",
+    "sha256": "c959950fad96b8b9b71a4a27c979c8b676e2dc4e109bda6097c53fb4b43be06b",
+    "optional": true,
+    "option": "audio",
+    "source": "https://github.com/gregoftheweb/kOMA-AudioControl",
+    "store": "https://www.opendesktop.org/p/2377512/",
+    "commit": "260faf4",
+    "provenance": "Local GitHub release build; Store listing 0.1.0 verified, Store download API unavailable."
+  },
+  {
+    "name": "Spacer with Divider",
+    "id": "com.github.idityage.spacerdivider",
+    "version": "1.0",
+    "license": "GPL-2.0-or-later",
+    "asset": "spacer-with-divider-1.0.plasmoid",
+    "sha256": "f6c3369e9db1ce13785e87106982b46042d611c5a7a5dc12122dc2058c968302",
+    "optional": true,
+    "option": "panels",
+    "source": "https://iditya.dev",
+    "provenance": "Installed source package by Aditya Maurya, unmodified QML; GPL license text included."
+  }
+]

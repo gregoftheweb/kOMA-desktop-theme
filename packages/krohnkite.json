@@ -1,0 +1,9 @@
+{
+  "id": "krohnkite",
+  "version": "0.9.9.2",
+  "asset": "krohnkite-0.9.9.2.kwinscript",
+  "sha256": "42f7f66531d366c74b5fc860381da3517ccb4cdccd1f80c122fcab6e9a8fcf7e",
+  "license": "MIT",
+  "source": "https://github.com/anametologin/krohnkite/releases/download/0.9.9.2/krohnkite-0.9.9.2_1d7fd74.kwinscript",
+  "commit": "1d7fd74"
+}

@@ -1,0 +1,8 @@
+{
+  "asset": "kwin-effect-rounded-corners-0.10.0-1-x86_64.pkg.tar.zst",
+  "sha256": "0116b1a51aed5f39b194b24401ea92e18989f7c2ce180066d8f068ac10a17389",
+  "kwin": "6.7.2-1",
+  "arch": "x86_64",
+  "license": "GPL-3.0-only",
+  "source": "https://github.com/matinlotfali/KDE-Rounded-Corners/tree/v0.10.0"
+}

@@ -86,7 +86,7 @@ Meta+Ctrl+Print	koma	trigger.capture.text	Text from screen (OCR)
 
 # ---- Apps
 Meta+Return	app	org.kde.konsole.desktop	Terminal
-Meta+Shift+B | Meta+Shift+Return	app	vivaldi-stable.desktop	Browser
+Meta+Shift+B | Meta+Shift+Return	cmd	gio	Browser
 Meta+Alt+Shift+B	cmd	vivaldi-stable --incognito	Browser (private)
 Meta+Shift+N	app	vscodium.desktop	VSCodium
 Meta+Shift+F	app	org.kde.dolphin.desktop	File manager

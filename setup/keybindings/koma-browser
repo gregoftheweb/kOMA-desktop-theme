@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+"""Launch the currently selected default browser, without hardcoding an app."""
+import subprocess
+from pathlib import Path
+import os
+browser = subprocess.check_output(['xdg-settings', 'get', 'default-web-browser'], text=True).strip()
+if not browser.endswith('.desktop') or '/' in browser:
+    raise SystemExit('No default browser desktop entry is configured')
+roots = [Path(os.environ.get('XDG_DATA_HOME', str(Path.home() / '.local/share')))]
+roots += [Path(p) for p in os.environ.get('XDG_DATA_DIRS', '/usr/local/share:/usr/share').split(':')]
+for root in roots:
+    entry = root / 'applications' / browser
+    if entry.is_file():
+        raise SystemExit(subprocess.call(['gio', 'launch', str(entry)]))
+raise SystemExit('Default browser desktop entry was not found: ' + browser)
