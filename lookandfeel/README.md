@@ -50,9 +50,9 @@ Panels are shared across virtual desktops; task/workspace indicators still
 reflect the current desktop. Transient network readings, launcher requests, and
 config-dialog sizes are excluded from packaged defaults.
 
-Default wallpaper: `Tron-1.jpg`, installed as the `kOMA-Tron-1` wallpaper
-package from `wallpapers/tron-aqua/Tron-1.jpg`. Selected by the Global Theme
-Wallpaper default.
+Wallpapers: `kOMA-Lightcycles` (the Global Theme default, rendered by
+`design/wallpaper/lightcycles.py`), `kOMA-Powder` and `kOMA-River`, installed as
+wallpaper packages from `wallpapers/`.
 
 Audio Control: install the separate [kOMA Audio Control](https://github.com/gregoftheweb/kOMA-AudioControl) project
 with `bin/install` (or `--no-place` before applying a fresh layout). Its widget,
@@ -78,7 +78,7 @@ workspace paths or external commands. The source wallpaper remains in
 
 ## Login screen
 
-Install the bundled `Tron-1.jpg` as the SDDM login background, matching the
+Install the kOMA River wallpaper as the SDDM login background, matching the
 default kOMA lock-screen wallpaper:
 
 ```sh

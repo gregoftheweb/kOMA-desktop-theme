@@ -50,7 +50,7 @@ def main():
         print('Login background restored.')
         return
     root = Path(__file__).resolve().parent.parent
-    image = args.wallpaper or root / 'wallpapers/tron-aqua/Tron-1.jpg'
+    image = args.wallpaper or root / 'wallpapers/kOMA-River/contents/images/1280x1280.jpg'
     if not image.is_file():
         parser.error(f'Wallpaper does not exist: {image}')
     theme = 'breeze'

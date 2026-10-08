@@ -19,5 +19,4 @@ node_modules/
 
 # Wallpaper collection: track only the two theme assets used by the installer
 /wallpapers/tron-aqua/*
-!/wallpapers/tron-aqua/Tron-1.jpg
 !/wallpapers/tron-aqua/tron-flower.jpg

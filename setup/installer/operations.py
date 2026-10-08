@@ -99,7 +99,7 @@ class Installer:
         choices['hotkeys'] = matches == len(expected)
         lock = config(self.config / 'kscreenlockerrc')
         lock_image = get(lock, 'Greeter][Wallpaper][org.kde.image][General', 'Image')
-        lock_active = 'kOMA-Tron-1/' in lock_image and Path(lock_image.removeprefix('file://')).is_file()
+        lock_active = 'kOMA-River/' in lock_image and Path(lock_image.removeprefix('file://')).is_file()
         sddm_theme = 'breeze'
         for file in [*sorted(Path('/usr/lib/sddm/sddm.conf.d').glob('*.conf')), *sorted(Path('/etc/sddm.conf.d').glob('*.conf')), Path('/etc/sddm.conf')]:
             sddm_theme = get(config(file), 'Theme', 'Current', sddm_theme)
@@ -226,7 +226,6 @@ class Installer:
                   self.data / 'plasma/desktoptheme/kOMA',
                   self.data / 'plasma/look-and-feel/com.columbiafoundry.koma',
                   self.data / 'aurorae/themes/com.columbiafoundry.komaborder',
-                  self.data / 'wallpapers/kOMA-Tron-1',
                   self.data / 'wallpapers/kOMA-Lightcycles',
                   self.data / 'wallpapers/kOMA-Powder',
                   self.data / 'wallpapers/kOMA-River',
@@ -387,7 +386,7 @@ class Installer:
                 system_backup = '/var/backups/koma-sddm/' + run_id
                 record['login_background_backup'] = system_backup
                 self.run(['pkexec', 'python3', str(self.repo / 'setup/install-login-background.py'), '--backup-dir', system_backup])
-                image = (self.data / 'wallpapers/kOMA-Tron-1/contents/images/1280x1280.jpg').as_uri()
+                image = (self.data / 'wallpapers/kOMA-River/contents/images/1280x1280.jpg').as_uri()
                 self.run(['kwriteconfig6', '--file', 'kscreenlockerrc', '--group', 'Greeter', '--key', 'WallpaperPlugin', 'org.kde.image'])
                 for key in ('Image', 'PreviewImage'):
                     self.run(['kwriteconfig6', '--file', 'kscreenlockerrc', '--group', 'Greeter', '--group', 'Wallpaper', '--group', 'org.kde.image', '--group', 'General', '--key', key, image])
