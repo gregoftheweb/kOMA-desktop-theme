@@ -26,7 +26,7 @@ def ui(screen):
     audio = choices.get('audio', False)
     backgrounds = choices.get('backgrounds', False)
     panels = choices.get('panels', False)
-    hotkeys = choices.get('hotkeys', False)
+    hotkeys = True  # kOMA (Omarchy) shortcuts by default; the user can choose Keep my hotkeys
     tiling = choices.get('tiling', False)
     stage = 'welcome'
     selected = 0

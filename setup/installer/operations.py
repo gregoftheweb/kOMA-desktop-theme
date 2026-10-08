@@ -206,6 +206,17 @@ class Installer:
                             ignore=shutil.ignore_patterns('.git', 'dist', '__pycache__', '*.pyc', 'ref', 'trial', 'dev', 'tests', 'undo.json*', 'backup'))
         self.emit('kOMA Installer is available from the Launcher menu.')
 
+    def wait_for_shortcuts(self, prefix, timeout=20):
+        rc = self.config / 'kglobalshortcutsrc'
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            if rc.is_file() and any(line.startswith(prefix) for line in rc.read_text(errors='replace').splitlines()):
+                self.emit(prefix + ' shortcuts registered.')
+                return True
+            time.sleep(0.5)
+        self.emit(prefix + ' shortcuts not saved yet; its default keys may conflict with kOMA hotkeys.')
+        return False
+
     def ensure_desktops(self, minimum=4):
         manager = ['qdbus6', 'org.kde.KWin', '/VirtualDesktopManager']
         def count():
@@ -354,6 +365,11 @@ class Installer:
                 if not record['tiling_active']:
                     plan['remaining'].append('Krohnkite enabled; sign out/in, then reopen to verify activation.')
                 self.emit('Krohnkite: ' + ('active' if record['tiling_active'] else 'enabled; activation pending'))
+                if record['tiling_active'] and plan.get('hotkeys'):
+                    # The hotkey step finds conflicts in kglobalshortcutsrc, which KDE's
+                    # shortcut service writes a few seconds after Krohnkite registers its
+                    # defaults (Super+H/J/K/L, ...). Wait for them so kOMA's keys take over.
+                    self.wait_for_shortcuts('Krohnkite')
             if plan.get('restore_hotkeys'):
                 self.env['KOMA_SHORTCUT_UNDO'] = plan['restore_hotkeys']
                 self.run(['python3', str(self.repo / 'setup/keybindings/apply.py'), '--undo'])
