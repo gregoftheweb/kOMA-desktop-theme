@@ -85,8 +85,11 @@ default kOMA lock-screen wallpaper:
 sudo python3 setup/install-login-background.py
 ```
 
-This preserves the active SDDM theme, copies the image into a system-readable
-location, and updates its `theme.conf.user` background setting. Previous settings
+It detects the active login manager. For **SDDM** it keeps the active SDDM theme
+and updates that theme's `theme.conf.user` background. For **Plasma Login Manager**
+(the default on recent EndeavourOS) it sets the greeter wallpaper in
+`/etc/plasmalogin.conf`, keeping any other settings there. Either way the image is
+copied to `/usr/share/backgrounds/koma/` so the login screen can read it. Previous settings
 are saved under `/var/backups/koma-sddm/`. It takes effect at the next login screen
 without restarting SDDM or ending the current session. This is a separate system
 installation step; installing a Plasma Global Theme alone does not configure SDDM.
