@@ -1,0 +1,9 @@
+{
+    "KPlugin": {
+        "Authors": [{ "Name": "Columbia Foundry" }],
+        "Id": "kOMA-Lightcycles",
+        "License": "CC-BY-SA-4.0",
+        "Name": "kOMA Lightcycles",
+        "Description": "The kOMA mark with light-cycle trails in Tron Aqua, McLaren, Ferrari and Lambo"
+    }
+}

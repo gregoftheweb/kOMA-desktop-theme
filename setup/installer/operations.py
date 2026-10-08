@@ -227,6 +227,7 @@ class Installer:
                   self.data / 'plasma/look-and-feel/com.columbiafoundry.koma',
                   self.data / 'aurorae/themes/com.columbiafoundry.komaborder',
                   self.data / 'wallpapers/kOMA-Tron-1',
+                  self.data / 'wallpapers/kOMA-Lightcycles',
                   self.data / 'plasma/plasmoids/com.columbiafoundry.komacolors']
         roots += [self.data / 'color-schemes' / p.name for p in (self.repo / 'color-schemes').glob('kOMA*.colors')]
         roots += [self.data / 'plasma/plasmoids' / c['id'] for c in components]

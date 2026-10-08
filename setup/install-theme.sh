@@ -32,6 +32,11 @@ cp -a "$repo/plasma/desktoptheme/kOMA/." "$data/plasma/desktoptheme/kOMA/"
 mkdir -p "$data/wallpapers/kOMA-Tron-1/contents/images"
 cp "$repo/wallpapers/tron-aqua/Tron-1.jpg" "$data/wallpapers/kOMA-Tron-1/contents/images/1280x1280.jpg"
 cp "$repo/wallpapers/kOMA-Tron-1/metadata.json" "$data/wallpapers/kOMA-Tron-1/metadata.json"
+# Ready-made wallpaper packages (the default is kOMA Lightcycles)
+for wallpaper in kOMA-Lightcycles; do
+  rm -rf "${data:?}/wallpapers/$wallpaper"
+  cp -a "$repo/wallpapers/$wallpaper" "$data/wallpapers/$wallpaper"
+done
 # Replace only kOMA-owned packages; retain old copies in the appearance backup.
 for relative in plasma/plasmoids/com.columbiafoundry.komacolors plasma/look-and-feel/com.columbiafoundry.koma aurorae/themes/com.columbiafoundry.komaborder; do
   target="$data/$relative"
