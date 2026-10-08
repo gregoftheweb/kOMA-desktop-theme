@@ -2,6 +2,10 @@
 
 Custom KDE Plasma 6 (Wayland) desktop inspired by Omarchy, maintained by Columbia Foundry.
 
+![kOMA desktop](docs/screenshots/desktop.png)
+
+![kOMA with apps open on two screens](docs/screenshots/workspace-both.png)
+
 ## Install
 
 In a KDE Plasma 6 session, open a terminal and run:
