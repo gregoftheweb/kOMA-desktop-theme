@@ -52,5 +52,8 @@ if [[ ${1:-} == --apply ]]; then
   kwriteconfig6 --file kdeglobals --group General --key ColorScheme --delete
   kwriteconfig6 --file kdeglobals --group General --key AccentColor --delete
   plasma-apply-colorscheme kOMATronAqua
+  # The Global Theme's wallpaper only reaches desktops created after it; set it on
+  # the existing ones now instead of at the next login.
+  plasma-apply-wallpaperimage "$data/wallpapers/kOMA-Lightcycles"
   qdbus6 org.kde.KWin /KWin reconfigure
 fi

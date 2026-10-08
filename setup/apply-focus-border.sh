@@ -52,10 +52,17 @@ w DisableOutlineFullScreen true
 
 kwriteconfig6 --file kwinrc --group Plugins --key "${effect}Enabled" true
 
-# Load or reload the effect live
-if [[ "$(qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.isEffectLoaded $effect)" == "true" ]]; then
+# Load or reload the effect live. A freshly installed effect may only be picked up
+# by KWin at the next login; say so rather than reporting success.
+loaded() { [[ "$(qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.isEffectLoaded $effect)" == "true" ]]; }
+qdbus6 org.kde.KWin /KWin reconfigure
+if loaded; then
   qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.reconfigureEffect $effect
 else
-  qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.loadEffect $effect >/dev/null
+  echo "loadEffect $effect: $(qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.loadEffect $effect)"
 fi
-echo "Focus border applied ($effect)"
+if loaded; then
+  echo "Focus border active ($effect)"
+else
+  echo "Focus border enabled; KWin starts it at your next sign-in ($effect)"
+fi
