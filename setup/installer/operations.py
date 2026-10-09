@@ -10,6 +10,8 @@ import time
 import uuid
 
 REPO = Path(__file__).resolve().parents[2]
+# Files Plasma's shell rewrites while it runs (panels and their widgets)
+PLASMASHELL_FILES = ['plasma-org.kde.plasma.desktop-appletsrc', 'plasmashellrc']
 CONFIG_NAMES = ['kdeglobals', 'plasmarc', 'kwinrc', 'kwinrulesrc', 'kcminputrc', 'ksplashrc',
                 'plasma-org.kde.plasma.desktop-appletsrc', 'plasmashellrc',
                 'kdedefaults', 'kglobalshortcutsrc', 'kscreenlockerrc']
@@ -450,19 +452,47 @@ class Installer:
             self.run(['python3', str(self.repo / 'setup/keybindings/apply.py'), '--undo'])
             # The live shortcut service owns this file; action-level restore preserves later edits.
             record['files'].pop(str(self.config / 'kglobalshortcutsrc'), None)
-        for name, entry in record['files'].items():
-            path = Path(name)
-            current = digest(path)
-            if current == entry['before']:
-                continue
-            if current != entry.get('after'):
-                conflicts.append(name)
-                continue
+        installer = self.data / 'koma/installer'
+        shell_files = {str(self.config / name) for name in PLASMASHELL_FILES}
+        def put_back(path, entry):
             if path.exists() or path.is_symlink():
                 path.unlink()
             if entry['backup']:
                 path.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(entry['backup'], path, follow_symlinks=False)
+        shell = []
+        for name, entry in record['files'].items():
+            path = Path(name)
+            # The installer's own copy may be what is running; it is removed last.
+            if path == installer or installer in path.parents:
+                continue
+            current = digest(path)
+            if current == entry['before']:
+                continue
+            # Plasma's shell rewrites its panel files while it runs, so a change there
+            # is not a user edit; they are restored with the shell stopped, below.
+            if name in shell_files:
+                shell.append((path, entry))
+                continue
+            if current != entry.get('after'):
+                conflicts.append(name)
+                continue
+            put_back(path, entry)
+        if shell:
+            # With plasmashell stopped it cannot write its in-memory panels back over
+            # the restored files; starting it again shows the original panels at once.
+            self.run(['systemctl', '--user', 'stop', 'plasma-plasmashell.service'])
+            try:
+                for path, entry in shell:
+                    put_back(path, entry)
+            finally:
+                self.run(['systemctl', '--user', 'start', 'plasma-plasmashell.service'])
+            self.emit('Panels restored.')
+        # KWin rereads its restored settings (title bars, border effect, tiling) now
+        subprocess.run(['qdbus6', 'org.kde.KWin', '/KWin', 'reconfigure'], env=self.env, capture_output=True)
+        if installer.exists():
+            shutil.rmtree(installer, ignore_errors=True)
+            self.emit('kOMA installer removed.')
         record['restore_conflicts'] = conflicts
         record['status'] = 'restore-conflicts' if conflicts else 'restored'
         self.save(Path(journal), record)

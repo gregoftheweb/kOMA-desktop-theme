@@ -103,7 +103,9 @@ def ui(screen):
             options = []
             details = logs[-max(1, height - 12):]
         else:
-            options = ['Return to welcome', 'Exit']
+            # after a restore the installer has removed itself; nothing left to return to
+            restored = stage != 'error' and str(result.get('status', '')).startswith('restore')
+            options = ['Exit'] if restored else ['Return to welcome', 'Exit']
             if stage == 'error':
                 details = ['Installation failed: ' + str(result), 'Backup retained; restore or retry from Welcome.'] + logs[-4:]
             else:

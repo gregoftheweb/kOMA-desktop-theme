@@ -39,6 +39,36 @@ class RestoreTests(unittest.TestCase):
             engine.restore(journal)
             self.assertEqual(original.read_text(), 'original')
 
+    def test_restore_puts_panels_back_with_the_shell_stopped_and_removes_the_installer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            engine = module.Installer(env={'HOME': str(home)})
+            calls = []
+            engine.run = lambda command: calls.append(command)
+            engine.config.mkdir(parents=True)
+            panels = engine.config / 'plasma-org.kde.plasma.desktop-appletsrc'
+            saved = home / 'saved-panels'
+            saved.write_text('stock panels')
+            before = module.digest(saved)
+            panels.write_text('kOMA panels')
+            after = module.digest(panels)
+            panels.write_text('kOMA panels, rewritten by plasmashell')
+            installer = engine.data / 'koma/installer'
+            script = installer / 'setup/install-login-background.py'
+            script.parent.mkdir(parents=True)
+            script.write_text('installed')
+            journal = home / 'record.json'
+            journal.write_text(json.dumps({'files': {
+                str(panels): {'before': before, 'after': after, 'backup': str(saved)},
+                str(script): {'before': None, 'after': module.digest(script), 'backup': None}}}))
+            result = engine.restore(journal)
+            self.assertEqual(panels.read_text(), 'stock panels')
+            self.assertEqual(result['restore_conflicts'], [])
+            stop = calls.index(['systemctl', '--user', 'stop', 'plasma-plasmashell.service'])
+            start = calls.index(['systemctl', '--user', 'start', 'plasma-plasmashell.service'])
+            self.assertLess(stop, start)
+            self.assertFalse(installer.exists())
+
     def test_desktops_added_once_and_extras_preserved(self):
         from unittest.mock import patch
         for initial in (1, 4, 6):
