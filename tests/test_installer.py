@@ -93,6 +93,29 @@ class RestoreTests(unittest.TestCase):
             self.assertTrue(other.exists())
             self.assertTrue(engine.data.is_dir())
 
+    def test_clean_restore_deletes_backups_and_a_conflicted_one_keeps_them(self):
+        for edited in (False, True):
+            with tempfile.TemporaryDirectory() as directory:
+                home = Path(directory)
+                engine = module.Installer(env={'HOME': str(home)})
+                engine.run = lambda command: None
+                journal = engine.state / 'backups/run/record.json'
+                journal.parent.mkdir(parents=True)
+                settings = engine.config / 'koma/backups/run/kdeglobals'
+                settings.parent.mkdir(parents=True)
+                settings.write_text('original')
+                added = engine.data / 'color-schemes/kOMA.colors'
+                added.parent.mkdir(parents=True)
+                added.write_text('installed')
+                after = module.digest(added)
+                if edited:
+                    added.write_text('user edit')
+                journal.write_text(json.dumps({'files': {str(added): {'before': None, 'after': after, 'backup': None}}}))
+                engine.restore(journal)
+                self.assertEqual(engine.state.exists(), edited)
+                self.assertEqual((engine.config / 'koma').exists(), edited)
+                self.assertTrue(engine.config.is_dir())
+
     def test_desktops_added_once_and_extras_preserved(self):
         from unittest.mock import patch
         for initial in (1, 4, 6):

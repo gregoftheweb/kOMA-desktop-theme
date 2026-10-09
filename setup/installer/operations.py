@@ -509,8 +509,15 @@ class Installer:
             self.emit('kOMA installer removed.')
         record['restore_conflicts'] = conflicts
         record['status'] = 'restore-conflicts' if conflicts else 'restored'
-        self.save(Path(journal), record)
-        self.save(self.state / 'status.json', record)
+        if conflicts:
+            # keep the backups: they hold the originals of the files left as edited
+            self.save(Path(journal), record)
+            self.save(self.state / 'status.json', record)
+        else:
+            # a clean restore leaves no kOMA records or settings backups behind
+            shutil.rmtree(self.state, ignore_errors=True)
+            shutil.rmtree(self.config / 'koma', ignore_errors=True)
+            self.emit('kOMA backups removed.')
         self.emit('Restore finished. Sign out and back in to reload restored desktop settings.')
         for name in conflicts:
             self.emit('Preserved later edit: ' + name)
