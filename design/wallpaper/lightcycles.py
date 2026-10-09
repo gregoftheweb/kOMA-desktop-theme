@@ -132,8 +132,8 @@ def render():
     img.paste(mark, pos, mark)
 
     # centered along the bottom, so screens that crop the sides (16:10) keep it whole
-    word = svg_image(WORDMARK, height=round(H * 0.045 * 0.75))
-    margin = round(H * 0.035)
+    word = svg_image(WORDMARK, height=round(H * 0.045 * 0.75 * 0.8))
+    margin = round(H * 0.018)
     wpos = ((W - word.width) // 2, H - word.height - margin)
     wglow = Image.new("RGB", (W, H))
     wglow.paste(word.convert("RGB"), wpos, word)
