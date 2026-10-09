@@ -36,7 +36,7 @@ for wallpaper in kOMA-Lightcycles kOMA-Powder kOMA-River; do
   cp -a "$repo/wallpapers/$wallpaper" "$data/wallpapers/$wallpaper"
 done
 # Replace only kOMA-owned packages; retain old copies in the appearance backup.
-for relative in plasma/plasmoids/com.columbiafoundry.komacolors plasma/look-and-feel/com.columbiafoundry.koma aurorae/themes/com.columbiafoundry.komaborder; do
+for relative in plasma/plasmoids/com.columbiafoundry.komacolors plasma/look-and-feel/com.columbiafoundry.koma kwin/decorations/com.columbiafoundry.komaborder; do
   target="$data/$relative"
   if [[ -e "$target" ]]; then
     mkdir -p "$backup/packages/$(dirname "$relative")"

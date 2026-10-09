@@ -68,6 +68,11 @@ class RestoreTests(unittest.TestCase):
             start = calls.index(['systemctl', '--user', 'start', 'plasma-plasmashell.service'])
             self.assertLess(stop, start)
             self.assertFalse(installer.exists())
+            self.assertFalse(installer.parent.exists())
+
+    def test_border_decoration_is_tracked_where_kpackagetool_installs_it(self):
+        engine = module.Installer(env={'HOME': '/home/someone'})
+        self.assertIn(engine.data / 'kwin/decorations/com.columbiafoundry.komaborder', engine.roots([]))
 
     def test_restore_removes_package_folders_it_empties(self):
         with tempfile.TemporaryDirectory() as directory:

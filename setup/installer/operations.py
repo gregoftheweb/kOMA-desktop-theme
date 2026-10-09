@@ -238,7 +238,7 @@ class Installer:
                   self.data / 'icons/hicolor/scalable/apps/koma.svg',
                   self.data / 'plasma/desktoptheme/kOMA',
                   self.data / 'plasma/look-and-feel/com.columbiafoundry.koma',
-                  self.data / 'aurorae/themes/com.columbiafoundry.komaborder',
+                  self.data / 'kwin/decorations/com.columbiafoundry.komaborder',
                   self.data / 'wallpapers/kOMA-Lightcycles',
                   self.data / 'wallpapers/kOMA-Powder',
                   self.data / 'wallpapers/kOMA-River',
@@ -502,6 +502,10 @@ class Installer:
         subprocess.run(['qdbus6', 'org.kde.KWin', '/KWin', 'reconfigure'], env=self.env, capture_output=True)
         if installer.exists():
             shutil.rmtree(installer, ignore_errors=True)
+            try:
+                installer.parent.rmdir()  # the kOMA data folder, if nothing else is in it
+            except OSError:
+                pass
             self.emit('kOMA installer removed.')
         record['restore_conflicts'] = conflicts
         record['status'] = 'restore-conflicts' if conflicts else 'restored'
