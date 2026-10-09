@@ -8,10 +8,10 @@ Custom KDE Plasma 6 (Wayland) desktop inspired by Omarchy, maintained by Columbi
 
 ## Install
 
-Current version: **0.1.11**. In a KDE Plasma 6 session, open a terminal and run:
+Current version: **0.1.12**. In a KDE Plasma 6 session, open a terminal and run:
 
 ```sh
-curl -fsSL https://github.com/gregoftheweb/kOMA-desktop-theme/releases/download/v0.1.11/get-koma.sh | bash
+curl -fsSL https://github.com/gregoftheweb/kOMA-desktop-theme/releases/download/v0.1.12/get-koma.sh | bash
 ```
 
 This downloads the kOMA installer, checks it against the release checksums, and opens
@@ -20,7 +20,7 @@ settings are backed up first and can be restored from the installer at any time.
 Afterwards it is also available from the kOMA Launcher under **Setup › kOMA Installer**.
 
 Prefer to read it first? Download `get-koma.sh` from the
-[0.1.11 release](https://github.com/gregoftheweb/kOMA-desktop-theme/releases/tag/v0.1.11)
+[0.1.12 release](https://github.com/gregoftheweb/kOMA-desktop-theme/releases/tag/v0.1.12)
 and run `bash get-koma.sh`. Details of every choice: [installer guide](docs/installer.md).
 
 Requirements: KDE Plasma 6, Python 3, curl. On Arch-based systems the installer can
