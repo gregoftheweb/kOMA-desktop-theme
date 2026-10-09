@@ -30,8 +30,8 @@ are preserved and reported; sign out/in afterward to reload restored settings.
 Restore removes installer-owned files and the folders they leave empty, puts the original panels back (Plasma's shell is briefly restarted), and finally removes the installer itself. A restore with no conflicts also deletes kOMA's backups (`~/.local/state/koma`, `~/.config/koma`); if later edits were preserved, the backups are kept.
 System packages installed separately are retained.
 
-Validation: package checksums, Python compilation, and restore behavior unit tests passed.
-Fresh VM installation and actual Plasma UI behavior still require testing.
+Validation: package checksums, Python compilation, and restore behavior unit tests pass,
+and install followed by restore was tested on a fresh EndeavourOS (KDE Plasma 6) VM.
 
 Panel center order: expanding spacer → Launcher → separator → clock/date →
 optional separator + Advanced Weather → expanding spacer. The separator between
