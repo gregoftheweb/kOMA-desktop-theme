@@ -131,9 +131,10 @@ def render():
     img = ImageChops.add(img, glow.filter(ImageFilter.GaussianBlur(40)).point(lambda v: v * 35 // 100))
     img.paste(mark, pos, mark)
 
-    word = svg_image(WORDMARK, height=round(H * 0.045))
-    margin = round(H * 0.045)
-    wpos = (W - word.width - margin, H - word.height - margin)
+    # centered along the bottom, so screens that crop the sides (16:10) keep it whole
+    word = svg_image(WORDMARK, height=round(H * 0.045 * 0.75))
+    margin = round(H * 0.035)
+    wpos = ((W - word.width) // 2, H - word.height - margin)
     wglow = Image.new("RGB", (W, H))
     wglow.paste(word.convert("RGB"), wpos, word)
     img = ImageChops.add(img, wglow.filter(ImageFilter.GaussianBlur(10)).point(lambda v: v * 40 // 100))
