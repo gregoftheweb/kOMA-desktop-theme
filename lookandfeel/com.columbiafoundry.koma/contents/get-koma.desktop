@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Link
+Name=Get the full kOMA desktop
+Comment=Install instructions for the complete kOMA desktop (one command)
+Icon[$e]=$HOME/.local/share/plasma/look-and-feel/com.columbiafoundry.koma/contents/splash/images/koma.svg
+URL=https://github.com/gregoftheweb/kOMA-desktop-theme#install

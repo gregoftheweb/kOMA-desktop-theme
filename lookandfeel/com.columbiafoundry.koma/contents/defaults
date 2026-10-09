@@ -5,7 +5,7 @@ widgetStyle=breeze
 ColorScheme=kOMATronAqua
 
 [kdeglobals][Icons]
-Theme=plasma-monochrome-icons
+Theme=breeze-dark
 
 [plasmarc][Theme]
 name=kOMA
