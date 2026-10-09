@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Columbia Foundry
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma ComponentBehavior: Bound
+import QtCore
 import QtQuick
 
 Rectangle {
@@ -90,6 +91,20 @@ Rectangle {
                 font.pixelSize: Math.max(18, root.height * 0.022)
                 font.letterSpacing: 4
             }
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                // only until the kOMA installer has run (it installs this icon)
+                visible: installed.status === Image.Error
+                text: "Get the full kOMA desktop: github.com/gregoftheweb/kOMA-desktop-theme"
+                color: "#E9EEF5"
+                opacity: 0.6
+                font.pixelSize: Math.max(12, root.height * 0.013)
+            }
+        }
+        Image {
+            id: installed
+            visible: false
+            source: StandardPaths.writableLocation(StandardPaths.GenericDataLocation) + "/icons/hicolor/scalable/apps/koma.svg"
         }
     }
     NumberAnimation {
