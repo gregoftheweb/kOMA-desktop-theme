@@ -69,6 +69,25 @@ class RestoreTests(unittest.TestCase):
             self.assertLess(stop, start)
             self.assertFalse(installer.exists())
 
+    def test_restore_removes_package_folders_it_empties(self):
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            engine = module.Installer(env={'HOME': str(home)})
+            engine.run = lambda command: None
+            widget = engine.data / 'plasma/plasmoids/com.columbiafoundry.example'
+            added = widget / 'contents/ui/main.qml'
+            added.parent.mkdir(parents=True)
+            added.write_text('installed')
+            other = engine.data / 'plasma/plasmoids/someone.elses/metadata.json'
+            other.parent.mkdir(parents=True)
+            other.write_text('keep')
+            journal = home / 'record.json'
+            journal.write_text(json.dumps({'files': {str(added): {'before': None, 'after': module.digest(added), 'backup': None}}}))
+            engine.restore(journal)
+            self.assertFalse(widget.exists())
+            self.assertTrue(other.exists())
+            self.assertTrue(engine.data.is_dir())
+
     def test_desktops_added_once_and_extras_preserved(self):
         from unittest.mock import patch
         for initial in (1, 4, 6):

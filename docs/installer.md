@@ -27,7 +27,7 @@ Backups and shared status are stored in `$XDG_STATE_HOME/koma` (default
 Restore from Welcome, or explicitly run `./uninstall.sh --restore-latest`.
 Restore only overwrites files that still match the installation result. Later edits
 are preserved and reported; sign out/in afterward to reload restored settings.
-Restore removes installer-owned files, but may leave empty package directories.
+Restore removes installer-owned files and the folders they leave empty, puts the original panels back (Plasma's shell is briefly restarted), and finally removes the installer itself.
 System packages installed separately are retained.
 
 Validation: package checksums, Python compilation, and restore behavior unit tests passed.

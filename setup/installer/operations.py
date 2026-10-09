@@ -460,6 +460,16 @@ class Installer:
             if entry['backup']:
                 path.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(entry['backup'], path, follow_symlinks=False)
+            else:
+                # remove folders this left empty (a widget's or wallpaper's package),
+                # stopping at the user's data and config folders
+                for parent in path.parents:
+                    if parent in (self.data, self.config) or self.data not in parent.parents and self.config not in parent.parents:
+                        break
+                    try:
+                        parent.rmdir()
+                    except OSError:
+                        break
         shell = []
         for name, entry in record['files'].items():
             path = Path(name)
