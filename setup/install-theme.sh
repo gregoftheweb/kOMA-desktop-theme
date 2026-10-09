@@ -52,6 +52,15 @@ if [[ ${1:-} == --apply ]]; then
   kwriteconfig6 --file kdeglobals --group General --key ColorScheme --delete
   kwriteconfig6 --file kdeglobals --group General --key AccentColor --delete
   plasma-apply-colorscheme kOMATronAqua
+  # The Global Theme names Breeze Dark (it works without the installer); kOMA uses
+  # Plasma Monochrome, set here and reloaded at once where Plasma's helper exists
+  kwriteconfig6 --file kdeglobals --group Icons --key Theme plasma-monochrome-icons
+  for helper in "$(command -v plasma-changeicons)" /usr/lib/plasma-changeicons /usr/libexec/plasma-changeicons /usr/lib/*/libexec/plasma-changeicons; do
+    if [[ -x $helper ]]; then
+      "$helper" plasma-monochrome-icons || echo 'Icons switch at the next sign-in.'
+      break
+    fi
+  done
   # No title bars now; the kOMA Border decoration alone would wait for the next sign-in
   bash "$repo/setup/apply-no-titlebars.sh"
   # The Global Theme's wallpaper only reaches desktops created after it; set it on

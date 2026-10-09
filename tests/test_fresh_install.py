@@ -11,7 +11,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-STUBS = ("kpackagetool6", "kwriteconfig6", "qdbus6", "plasma-apply-lookandfeel", "plasma-apply-colorscheme", "plasma-apply-wallpaperimage", "kreadconfig6")
+STUBS = ("kpackagetool6", "kwriteconfig6", "qdbus6", "plasma-apply-lookandfeel", "plasma-apply-colorscheme", "plasma-apply-wallpaperimage", "kreadconfig6", "plasma-changeicons")
 
 
 class FreshHomeTests(unittest.TestCase):
@@ -65,6 +65,8 @@ class FreshHomeTests(unittest.TestCase):
         _, calls = self.run_install("--apply")
         self.assertIn("plasma-apply-lookandfeel --apply com.columbiafoundry.koma", calls)
         self.assertIn("plasma-apply-colorscheme kOMATronAqua", calls)
+        self.assertIn("kwriteconfig6 --file kdeglobals --group Icons --key Theme plasma-monochrome-icons", calls)
+        self.assertIn("plasma-changeicons plasma-monochrome-icons", calls)
         self.assertRegex(calls, r"plasma-apply-wallpaperimage \S+/wallpapers/kOMA-Lightcycles\n")
         self.assertIn("kwinrulesrc --group koma-no-titlebar --key noborder true", calls)
 
