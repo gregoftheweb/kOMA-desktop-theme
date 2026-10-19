@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -25,6 +26,18 @@ def digest(path):
     return None
 
 
+BORDER_PLUGIN = Path('/usr/lib/qt6/plugins/kwin/effects/plugins/kwin4_effect_shapecorners.so')
+
+
+def border_plugin_matches(version, path=BORDER_PLUGIN):
+    """KWin's effect factory IID includes the exact upstream KWin version."""
+    try:
+        factories = re.findall(rb'org\.kde\.kwin\.EffectPluginFactory(\d+\.\d+\.\d+)(?![0-9.])', path.read_bytes())
+    except OSError:
+        return False
+    return version.encode() in factories
+
+
 class Installer:
     def __init__(self, repo=REPO, env=None, emit=lambda message: None):
         self.repo = Path(repo)
@@ -35,6 +48,17 @@ class Installer:
         self.state = Path(self.env.get('XDG_STATE_HOME', home / '.local/state')) / 'koma'
         self.emit = emit
         self.manifest = json.loads((self.repo / 'packages/manifest.json').read_text())
+
+    def border_installation(self):
+        result = subprocess.run(['pacman', '-Q', 'kwin'], env=self.env, capture_output=True, text=True)
+        fields = result.stdout.strip().split()
+        if result.returncode or len(fields) != 2 or fields[0] != 'kwin':
+            raise RuntimeError('Cannot determine installed KWin version; borders require Arch/EndeavourOS pacman.')
+        version = fields[1].split('-')[0]
+        if border_plugin_matches(version):
+            return 'keep'
+        effect = json.loads((self.repo / 'packages/focus-border.json').read_text())
+        return 'package' if version == effect['kwin'].split('-')[0] else 'build'
 
     def inventory(self):
         """Inspect existing installations without requiring an installer journal."""
@@ -167,13 +191,17 @@ class Installer:
             effect = json.loads((self.repo / 'packages/focus-border.json').read_text())
             if digest(self.repo / 'packages' / effect['asset']) != effect['sha256']:
                 errors.append('Focus-border package checksum failed.')
-            if not Path('/usr/lib/qt6/plugins/kwin/effects/plugins/kwin4_effect_shapecorners.so').exists():
-                version = subprocess.run(['pacman', '-Q', 'kwin'], env=self.env, capture_output=True, text=True)
-                if version.stdout.strip() != 'kwin ' + effect['kwin']:
-                    if not shutil.which('makepkg', path=self.env.get('PATH')) or not shutil.which('konsole', path=self.env.get('PATH')):
-                        errors.append('Building borders requires Arch/EndeavourOS makepkg and Konsole.')
-                if not shutil.which('pkexec', path=self.env.get('PATH')):
-                    errors.append('Missing pkexec for system border-effect installation.')
+            try:
+                border_action = self.border_installation()
+            except (OSError, RuntimeError) as error:
+                errors.append(str(error))
+                border_action = 'keep'
+            if border_action == 'build':
+                for name in ('makepkg', 'konsole', 'sudo'):
+                    if not shutil.which(name, path=self.env.get('PATH')):
+                        errors.append('Building borders requires ' + name + '.')
+            if border_action == 'package' and not shutil.which('pkexec', path=self.env.get('PATH')):
+                errors.append('Missing pkexec for system border-effect installation.')
             krohnkite = json.loads((self.repo / 'packages/krohnkite.json').read_text())
             if digest(self.repo / 'packages' / krohnkite['asset']) != krohnkite['sha256']:
                 errors.append('Krohnkite package checksum failed.')
@@ -331,16 +359,15 @@ class Installer:
                     raise RuntimeError('Widget version verification failed: ' + c['name'])
             if plan.get('tiling'):
                 effect = json.loads((self.repo / 'packages/focus-border.json').read_text())
-                if not Path('/usr/lib/qt6/plugins/kwin/effects/plugins/kwin4_effect_shapecorners.so').exists():
-                    version = subprocess.run(['pacman', '-Q', 'kwin'], env=self.env, capture_output=True, text=True)
-                    if version.stdout.strip() == 'kwin ' + effect['kwin']:
-                        self.emit('Installing the border effect: approve the administrator dialog.')
-                        self.run(['pkexec', 'pacman', '-U', '--needed', '--noconfirm', str(self.repo / 'packages' / effect['asset'])])
-                    else:
-                        self.emit('A terminal will open to build borders for this KWin version; enter sudo password there.')
-                        self.run(['konsole', '--separate', '--nofork', '-e', 'bash', str(self.repo / 'setup/install-focus-border.sh')])
-                        if not Path('/usr/lib/qt6/plugins/kwin/effects/plugins/kwin4_effect_shapecorners.so').exists():
-                            raise RuntimeError('Border build/install did not complete; see the build terminal output.')
+                border_action = self.border_installation()
+                if border_action == 'package':
+                    self.emit('Installing the compatible border effect: approve the administrator dialog.')
+                    self.run(['pkexec', 'pacman', '-U', '--noconfirm', str(self.repo / 'packages' / effect['asset'])])
+                elif border_action == 'build':
+                    self.emit('A terminal will open to rebuild missing or incompatible borders for this KWin version; enter sudo password there.')
+                    self.run(['konsole', '--separate', '--nofork', '-e', 'bash', str(self.repo / 'setup/install-focus-border.sh')])
+                if self.border_installation() != 'keep':
+                    raise RuntimeError('Border installation did not produce a plugin compatible with the installed KWin.')
                 self.run(['bash', str(self.repo / 'setup/apply-focus-border.sh')])
                 metadata = json.loads((self.repo / 'packages/krohnkite.json').read_text())
                 target = self.data / 'kwin/scripts/krohnkite'
@@ -417,7 +444,9 @@ class Installer:
                 subprocess.run(effects + ['org.kde.kwin.Effects.unloadEffect', 'kwin4_effect_shapecorners'], env=self.env, capture_output=True)
                 subprocess.run(effects + ['org.kde.kwin.Effects.loadEffect', 'kwin4_effect_shapecorners'], env=self.env, capture_output=True)
                 loaded = subprocess.run(effects + ['org.kde.kwin.Effects.isEffectLoaded', 'kwin4_effect_shapecorners'], env=self.env, capture_output=True, text=True).stdout.strip() == 'true'
-                self.emit('Focus border ' + ('active.' if loaded else 'starts at your next sign-in.'))
+                if not loaded:
+                    raise RuntimeError('KWin could not load the border effect. If KWin was upgraded during this session, sign out and back in, then retry. Otherwise inspect the KWin journal for plugin errors.')
+                self.emit('Focus border active.')
             self.deploy_installer()
             if plan.get('panels'):
                 # Give Plasma time to publish the new panel's reserved screen area

@@ -13,5 +13,6 @@ sed -i 's|::https://github.com/matinlotfali/KDE-Rounded-Corners/archive/v${pkgve
 printf '\nBuilding kOMA colored borders for your installed KWin.\n'
 sudo pacman -S --needed base-devel cmake extra-cmake-modules ninja vulkan-headers
 makepkg --force --cleanbuild --noconfirm
-sudo pacman -U --needed --noconfirm kwin-effect-rounded-corners-0.10.0-1-x86_64.pkg.tar.zst
+# Reinstall even when the package version is unchanged: the KWin ABI changed.
+sudo pacman -U --noconfirm kwin-effect-rounded-corners-0.10.0-1-x86_64.pkg.tar.zst
 printf '\nBorder effect installed. Return to the kOMA installer.\n'
