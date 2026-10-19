@@ -64,5 +64,6 @@ fi
 if loaded; then
   echo "Focus border active ($effect)"
 else
-  echo "Focus border enabled; KWin starts it at your next sign-in ($effect)"
+  echo "KWin could not load $effect. If KWin was upgraded during this session, sign out and back in, then retry; otherwise inspect the KWin journal." >&2
+  exit 1
 fi

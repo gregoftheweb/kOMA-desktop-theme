@@ -67,3 +67,12 @@ and borders, and login/lock backgrounds. Existing manual installations need no
 installer journal. Detected choices are annotated; failed-run selections remain
 available for retry. Detection of panels and hotkeys is a signature check, not a
 claim that every customized setting matches the bundled defaults.
+
+Colored borders use a KWin effect whose plugin version must match the installed
+KWin version, including the patch number. The installer checks existing plugins,
+replacing incompatible ones with the matching bundled package or rebuilding from
+bundled source. Rebuilds reinstall the package even when its package version has
+not changed. Installation reports success only after KWin loads the effect.
+If KWin was upgraded during the current session, sign out and back in before retrying.
+After a later KWin upgrade, rerun the latest installer with Krohnkite/colored borders
+selected to repair the effect. Existing installations are not updated automatically.
